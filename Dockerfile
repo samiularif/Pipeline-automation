@@ -1,5 +1,5 @@
 # use an official light-weight Python runtime as base image
-FROM python:3.11-alpine
+FROM python:3.9
 
 # sets the working directory
 WORKDIR /app
@@ -27,8 +27,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py . 
 
 # create a non-root user for security
-RUN adduser -D appuser && chown appuser:appuser /app
-
+RUN useradd -m -r appuser && chown appuser:appuser /app
 # switch to the non-root user
 USER appuser 
 
