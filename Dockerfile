@@ -4,10 +4,15 @@ FROM python:3.11-slim
 # sets the working directory
 WORKDIR /app
 
+
+ARG APP_VERSION=dev
+ARG WEATHER_API_KEY
+
 # sets environment variables for security & performance
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    WEATHER_API_KEY=""
+    APP_VERSION=${APP_VERSION} \
+    WEATHER_API_KEY=${WEATHER_API_KEY}
 
 # install systemdependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
