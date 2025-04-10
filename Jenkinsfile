@@ -13,6 +13,13 @@ pipeline {
     }
     
     stages {
+        stage('Debug Webhook Payload') {
+            steps {
+                script {
+                    echo "RELEASE_VERSION: ${params.RELEASE_VERSION}"
+                }
+            }
+        }
         stage('Validate Release Version') {
             steps {
                 script {
