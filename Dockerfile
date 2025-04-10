@@ -21,7 +21,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 COPY requirements.txt .
 
 # install python dependencies
-RUN pip install --no-cache-dir --timeout=30 --retries=10 -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir --timeout=10 --retries=2 -r requirements.txt
 
 # copy the application code to the working directory
 COPY app.py . 
