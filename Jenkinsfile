@@ -39,8 +39,7 @@ pipeline {
         steps {
             script {
                 sh """
-                    export DOCKER_BUILDKIT=1
-                    docker build -t yourimage:${params.RELEASE_VERSION} \\
+                    docker build -t tanjim26/test-devops:${params.RELEASE_VERSION} \\
                     --build-arg APP_VERSION=${params.RELEASE_VERSION} \\
                     --build-arg WEATHER_API_KEY=${env.WEATHER_API_KEY} .
                 """
