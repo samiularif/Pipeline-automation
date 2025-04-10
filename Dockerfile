@@ -16,7 +16,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 # install systemdependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
+    build-essential \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # copy the dependencies file to the working directory
