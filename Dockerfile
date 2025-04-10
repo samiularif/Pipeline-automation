@@ -1,5 +1,5 @@
 # use an official light-weight Python runtime as base image
-FROM python:3.11-slim
+FROM python:3.11-alpine
 
 # sets the working directory
 WORKDIR /app
@@ -15,9 +15,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     WEATHER_API_KEY=${WEATHER_API_KEY}
 
 # install systemdependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache build-base
 
 # copy the dependencies file to the working directory
 COPY requirements.txt .
@@ -29,7 +27,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py . 
 
 # create a non-root user for security
-RUN useradd -m -r appuser && chown appuser:appuser /app
+RUN adduser -D appuser && chown appuser:appuser /app
 
 # switch to the non-root user
 USER appuser 
