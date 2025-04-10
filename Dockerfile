@@ -15,7 +15,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     WEATHER_API_KEY=${WEATHER_API_KEY}
 
 # install systemdependencies
-RUN apk add --no-cache build-base
+#RUN apk add --no-cache build-base
 
 # copy the dependencies file to the working directory
 COPY requirements.txt .
