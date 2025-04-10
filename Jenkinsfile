@@ -37,10 +37,12 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                script {
-                    def version = params.RELEASE_VERSION
-                    docker.build("tanjim26/test-devops:${version}", "--build-arg APP_VERSION=${version} --build-arg WEATHER_API_KEY=${WEATHER_API_KEY} .")
-                }
+                sh '''
+                    export DOCKER_BUILDKIT=1
+                    docker build -t yourimage:${params.RELEASE_VERSION} \
+                    --build-arg APP_VERSION=${params.RELEASE_VERSION} \
+                    --build-arg WEATHER_API_KEY=${env.WEATHER_API_KEY} .
+                '''
             }
         }
         stage('Push Docker Image') {
