@@ -15,8 +15,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     WEATHER_API_KEY=${WEATHER_API_KEY}
 
 # install systemdependencies
-RUN sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list && \
-    apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
