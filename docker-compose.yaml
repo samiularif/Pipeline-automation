@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    environment:
+      - WEATHER_API_KEY=${WEATHER_API_KEY}
+    volumes:
+      - .:/app 
+    command: ["python", "app.py"]
