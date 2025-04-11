@@ -2,6 +2,7 @@ pipeline {
     agent any
     parameters {
         string(name: 'RELEASE_VERSION', defaultValue: '', description: 'Tag name from GitHub releases')
+        string(name: 'RELEASE_ACTION', defaultValue: '', description: 'Action from GitHub release event')
     }
     environment {
         DOCKERHUB_CREDENTIALS = credentials('docker')
@@ -17,16 +18,22 @@ pipeline {
             steps {
                 script {
                     echo "RELEASE_VERSION: ${params.RELEASE_VERSION}"
+                    echo "RELEASE_ACTION: ${params.RELEASE_ACTION}"
                 }
             }
         }
         stage('Validate Release Version') {
             steps {
                 script {
+                    if(!params.RELEASE_ACTION?.trim() || params.RELEASE_ACTION != 'published') {
+                        echo "Skipping pipeline: Action is '${params.RELEASE_ACTION}', expected 'published'"
+                        currentBuild.result = 'SUCCESS'
+                        return
+                    }
                     if (!params.RELEASE_VERSION?.trim()) {
                         error("RELEASE_VERSION is required. Make sure GitHub webhook sends the tag name.")
                     }
-                    echo "Triggered by GitHub release: ${params.RELEASE_VERSION}"
+                    echo "Triggered by GitHub release (published): ${params.RELEASE_VERSION}"
                 }
             }
         }
