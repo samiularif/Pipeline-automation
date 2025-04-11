@@ -4,6 +4,21 @@ pipeline {
         string(name: 'RELEASE_VERSION', defaultValue: '', description: 'Tag name from GitHub releases')
         string(name: 'RELEASE_ACTION', defaultValue: '', description: 'Action from GitHub release event')
     }
+    triggers {
+        GenericTrigger(
+            genericVariables: [
+                [key: 'RELEASE_ACTION', value: '$.action'],
+                [key: 'RELEASE_VERSION', value: '$.release.tag_name'],
+                [key: 'RELEASE_NAME', value: '$.release.name']
+            ],
+            token: 'release-trigger',
+            causeString: 'Triggered by GitHub Release: $RELEASE_VERSION',
+            regexpFilterText: '$RELEASE_ACTION',
+            regexpFilterExpression: '^published$',
+            printContributedVariables: true,
+            printPostContent: true
+        )
+    }
     environment {
         DOCKERHUB_CREDENTIALS = credentials('docker')
         WEATHER_API_KEY = credentials('weather_api_key')
