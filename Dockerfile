@@ -15,15 +15,22 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     WEATHER_API_KEY=${WEATHER_API_KEY}
 
 # install systemdependencies
-#RUN apk add --no-cache build-base
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 # copy the dependencies file to the working directory
 COPY requirements.txt .
 
-# install python dependencies
-RUN pip install --upgrade pip --timeout=10 --retries=2
-RUN pip install --no-cache-dir --timeout=10 --retries=2 -r requirements.txt
+# Use a virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
+# install python dependencies
+RUN pip install --upgrade pip --timeout=100 --retries=5
+RUN pip install --no-cache-dir --timeout=100 --retries=5 \
+    -i https://pypi.org/simple/ \
+    -r requirements.txt
 # copy the application code to the working directory
 COPY app.py . 
 
